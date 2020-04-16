@@ -7,11 +7,11 @@ Program przeznaczony dla układu esp8266 służący do pomiaru temperatury.
 ## Gotowe:
 * obsługa czujnika: DHT22
 
-## W przyszłości:
+## W przyszłości (do rozważenia):
 * obsługa czujnika: DS18B20
 * nodemcu / WiFi, możliwość odpytywania po API
 * zapis danych w odpowiednich intwerwałach czasowych na kartę SD
-* określanie (do rozważenia)
+* określanie
     * minimum
     * maksimum
     * odchylenia standardowego
