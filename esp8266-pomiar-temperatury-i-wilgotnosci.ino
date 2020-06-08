@@ -1,4 +1,4 @@
-#include <DHT.h>
+ #include <DHT.h>
 
 #define DHTPIN 12         // wyjście danych sensora jest dołączone do linii D6 nodemcu
 
