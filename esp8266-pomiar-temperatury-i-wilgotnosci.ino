@@ -148,7 +148,7 @@ void temperaturesRoute() {
 }
 
 
-void statsRoute() {
+void dataRoute() {
   digitalWrite(Esp8266Pins::BuiltinLed, 1);
 
   float mean = 0;
@@ -180,8 +180,6 @@ void statsRoute() {
   digitalWrite(Esp8266Pins::BuiltinLed, 0);
 }
 
-
-
 //======================Web server section
 
 
@@ -190,16 +188,7 @@ void setup()
 {
   Serial.begin(115200);
   
-  //dht.setup(DHTPIN);
   dht.begin();
-
-  //Serial.print("Status czujnika: ");
-  //Serial.println(dht.getStatusString());
-  //Serial.print("Model czujnika: ");
-  //Serial.println(dht.getModel());
-  //Serial.print("minimumSamplingPeriod czujnika: ");
-  //Serial.println(dht.getMinimumSamplingPeriod());
-  //delay(2000);
 
   WiFi.mode(WIFI_STA);
   WiFi.begin(ssid, password);
@@ -221,15 +210,11 @@ void setup()
 
   server.on("/", handleRoot);
 
-  server.on("/inline", []() {
-    server.send(200, "text/plain", "this works as well");
-  });
-
   server.on("/dht", dhtData);
 
-  server.on("/temperatures", temperaturesRoute);
+  server.on("/data", temperaturesRoute);
   
-  server.on("/stats", statsRoute);
+  server.on("/stats", dataRoute);
 
   server.onNotFound(handleNotFound);
 
@@ -241,11 +226,6 @@ void setup()
 
 void loop()
 {
-  //delay(dht.getMinimumSamplingPeriod());
-    
-  //float temperature = dht.readTemperature();
-  //float humidity = dht.readHumidity();
-
   if(millis() >= time_now + period){
     while(!timeClient.update()) {
       timeClient.forceUpdate();
@@ -253,10 +233,8 @@ void loop()
     
     time_now += period;
       
-    temperature = dht.readTemperature();
-    humidity = dht.readHumidity();
-    temperatures.push(temperature);
-    humidities.push(humidity);
+    temperatures.push(dht.readTemperature());
+    humidities.push(dht.readHumidity());
     utcTimes.push(timeClient.getFormattedTime());
     epochs.push(timeClient.getEpochTime());
   
@@ -274,6 +252,7 @@ void loop()
       Serial.println(" *C");
     }   
   }
+  
   server.handleClient();
   MDNS.update();             
 }
