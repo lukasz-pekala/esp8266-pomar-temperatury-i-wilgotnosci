@@ -222,6 +222,12 @@ void setup()
   Serial.println("HTTP server started");
 
   timeClient.begin();
+
+  Serial.println("Warming up DHT sensor");
+  Serial.println(dht.readTemperature());
+  Serial.println(dht.readHumidity());
+  Serial.println(timeClient.getFormattedTime());
+  Serial.println(timeClient.getEpochTime());
 }
 
 void loop()
